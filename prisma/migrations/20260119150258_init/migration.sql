@@ -24,6 +24,7 @@ CREATE TABLE "users" (
     "role" "UserRole" NOT NULL DEFAULT 'STUDENT',
     "fullName" TEXT NOT NULL,
     "image" TEXT,
+    "deviceName" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")

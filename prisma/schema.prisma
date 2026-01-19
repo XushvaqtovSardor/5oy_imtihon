@@ -52,6 +52,7 @@ model users {
   role            UserRole          @default(STUDENT)
   fullName        String
   image           String?
+  deviceName      String[]
   mentorProfile   mentorProfile?
   course          Course[]
   assginedCourses AssignedCourse[]
