@@ -16,6 +16,10 @@ export enum UserRole {
   STUDENT = 'STUDENT',
 }
 
+// Import Prisma UserRole for runtime compatibility
+import { UserRole as PrismaUserRole } from '@prisma/client';
+export { PrismaUserRole };
+
 export class registerDto {
   @ApiPropertyOptional({
     example: '+9989',

@@ -124,14 +124,12 @@ export class ProfileService {
       where: { userId },
       update: {
         courseId: dto.courseId,
-        groupId: dto.groupId,
         lessonId: dto.lessonId,
         url: dto.url,
       },
       create: {
         userId,
         courseId: dto.courseId,
-        groupId: dto.groupId,
         lessonId: dto.lessonId,
         url: dto.url,
       },

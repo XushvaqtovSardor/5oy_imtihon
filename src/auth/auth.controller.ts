@@ -34,8 +34,8 @@ export class AuthController {
         user: {
           id: 1,
           phone: '+998902400025',
-          email: 'user@example.com',
-          fullName: 'John Doe',
+          email: 'sardor@gmail.com',
+          fullName: 'fdsf',
           role: 'STUDENT',
           deviceName: ['iPhone 13'],
         },

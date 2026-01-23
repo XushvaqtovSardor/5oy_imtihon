@@ -28,7 +28,7 @@ jobs:
               git clone https://github.com/XushvaqtovSardor/5oy_imtihon
             else
               echo "Pulling latest changes!"
-              cd aziz_botgrammy2   
+              cd 5oy_imtihon
               git pull origin main  
             fi
 
