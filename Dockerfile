@@ -5,10 +5,10 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 
+COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
-
-COPY . .
+    
 RUN pnpm build
 
 FROM node:20-alpine AS production
