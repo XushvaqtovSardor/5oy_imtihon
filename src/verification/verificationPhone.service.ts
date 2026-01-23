@@ -99,7 +99,7 @@ export class VerificationPhoneService {
     const { type, phone, otp } = payload;
 
     if (!phone) {
-      throw new HttpException('Phone is required', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Phone is  required', HttpStatus.BAD_REQUEST);
     }
 
     const key = this.getKey(type, phone);
