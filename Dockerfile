@@ -1,18 +1,20 @@
 FROM node:22-alpine
+WORKDIR /app
 
-    WORKDIR /app 
 
-    COPY package*.json ./
-    RUN npm i -g pnpm
-    RUN pnpm install
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-    COPY . . 
 
-    RUN npx prisma generate
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --shamefully-hoist
 
-    RUN pnpm run build
 
-    EXPOSE 4000
+COPY . .
 
-    CMD ["pnpm","run","start:prod"]
-        
+RUN npx prisma generate
+
+RUN pnpm run build
+
+EXPOSE 3000
+
+CMD sh -c "npx prisma migrate deploy && node dist/src/main.js"
