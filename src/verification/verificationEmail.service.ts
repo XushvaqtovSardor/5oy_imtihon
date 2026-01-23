@@ -115,7 +115,7 @@ export class VerificationEmailService {
     const storedOtp = JSON.parse(session);
 
     if (storedOtp !== otp) {
-      throw new HttpException('Invalid OTP code', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Invalid  OTP code', HttpStatus.BAD_REQUEST);
     }
 
     await this.redis.del(key);
