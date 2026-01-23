@@ -8,9 +8,12 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import {
-  registerDto,
-  resetPasswordDto,
-  LoginDto,
+  registerWithPhoneDto,
+  registerWithEmailDto,
+  resetPasswordWithPhoneDto,
+  resetPasswordWithEmailDto,
+  loginWithPhoneDto,
+  loginWithEmailDto,
   RefreshTokenDto,
 } from './dto/dto';
 
@@ -19,23 +22,22 @@ import {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post('register/phone')
   @ApiOperation({
-    summary: 'Register new user',
+    summary: 'Register new user with phone',
     description:
-      'Register a new user account using verified phone/email. Must verify with OTP first.',
+      'Register a new user account using verified phone number. Must verify phone with OTP first.',
   })
   @ApiResponse({
     status: 201,
-    description: 'User registered  successfully',
+    description: 'User registered successfully',
     schema: {
       example: {
         message: 'User successfully registered. Go to login to use website',
         user: {
           id: 1,
           phone: '+998902400025',
-          email: 'sardor@gmail.com',
-          fullName: 'fdsf',
+          fullName: 'John Doe',
           role: 'STUDENT',
           deviceName: ['iPhone 13'],
         },
@@ -44,25 +46,47 @@ export class AuthController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Phone/email not verified or already registered',
+    description: 'Phone not verified or already registered',
   })
-  register(@Body() dto: registerDto) {
-    if (dto.phone) {
-      return this.authService.registerPhone(dto);
-    } else if (dto.email) {
-      return this.authService.registerEmail(dto);
-    }
-    throw new HttpException(
-      'Phone or email is required',
-      HttpStatus.BAD_REQUEST,
-    );
+  registerWithPhone(@Body() dto: registerWithPhoneDto) {
+    return this.authService.registerPhone(dto);
   }
 
-  @Post('login')
+  @Post('register/email')
   @ApiOperation({
-    summary: 'User login',
+    summary: 'Register new user with email',
     description:
-      'Login with phone/email and password to get access and refresh tokens',
+      'Register a new user account using verified email. Must verify email with OTP first.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    schema: {
+      example: {
+        message: 'User successfully registered. Go to login to use website',
+        user: {
+          id: 1,
+          email: 'sardor@gmail.com',
+          fullName: 'John Doe',
+          role: 'STUDENT',
+          deviceName: ['iPhone 13'],
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Email not verified or already registered',
+  })
+  registerWithEmail(@Body() dto: registerWithEmailDto) {
+    return this.authService.registerEmail(dto);
+  }
+
+  @Post('login/phone')
+  @ApiOperation({
+    summary: 'User login with phone',
+    description:
+      'Login with phone number and password to get access and refresh tokens',
   })
   @ApiResponse({
     status: 200,
@@ -73,6 +97,33 @@ export class AuthController {
         user: {
           id: 1,
           phone: '+998902400025',
+          fullName: 'John Doe',
+          role: 'STUDENT',
+        },
+        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  loginWithPhone(@Body() dto: loginWithPhoneDto) {
+    return this.authService.loginPhone(dto);
+  }
+
+  @Post('login/email')
+  @ApiOperation({
+    summary: 'User login with email',
+    description:
+      'Login with email and password to get access and refresh tokens',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Login successful',
+    schema: {
+      example: {
+        message: 'Login successful',
+        user: {
+          id: 1,
           email: 'user@example.com',
           fullName: 'John Doe',
           role: 'STUDENT',
@@ -83,8 +134,8 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  login(@Body() dto: LoginDto) {
-    return this.authService.login(dto);
+  loginWithEmail(@Body() dto: loginWithEmailDto) {
+    return this.authService.loginEmail(dto);
   }
 
   @Post('refresh-token')
@@ -108,11 +159,11 @@ export class AuthController {
     return this.authService.refreshToken(dto.token, dto.deviceToken);
   }
 
-  @Post('reset-password')
+  @Post('reset-password/phone')
   @ApiOperation({
-    summary: 'Reset password',
+    summary: 'Reset password with phone',
     description:
-      'Reset user password using verified OTP code. Must verify phone/email with OTP first.',
+      'Reset user password using verified phone OTP code. Must verify phone with OTP first.',
   })
   @ApiResponse({
     status: 200,
@@ -122,7 +173,25 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 400, description: 'Not verified or user not found' })
-  resetPassword(@Body() dto: resetPasswordDto) {
-    return this.authService.resetPassword(dto);
+  resetPasswordWithPhone(@Body() dto: resetPasswordWithPhoneDto) {
+    return this.authService.resetPasswordPhone(dto);
+  }
+
+  @Post('reset-password/email')
+  @ApiOperation({
+    summary: 'Reset password with email',
+    description:
+      'Reset user password using verified email OTP code. Must verify email with OTP first.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Password reset successfully',
+    schema: {
+      example: { message: 'Password successfully reset' },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Not verified or user not found' })
+  resetPasswordWithEmail(@Body() dto: resetPasswordWithEmailDto) {
+    return this.authService.resetPasswordEmail(dto);
   }
 }

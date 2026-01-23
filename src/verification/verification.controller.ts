@@ -1,6 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { sendOtpDto, verifyOtpDto } from 'src/auth/dto/dto';
+import { 
+  sendEmailOtpDto, 
+  sendPhoneOtpDto, 
+  verifyEmailOtpDto, 
+  verifyPhoneOtpDto 
+} from 'src/auth/dto/dto';
 import { VerificationPhoneService } from './verificationPhone.service';
 import { VerificationEmailService } from './verificationEmail.service';
 
@@ -12,11 +17,10 @@ export class VerificationController {
     private readonly verificationEmailService: VerificationEmailService,
   ) {}
 
-  @Post('send')
+  @Post('email/send')
   @ApiOperation({
-    summary: 'Send OTP code',
-    description:
-      'Send OTP verification code to phone or email for registration or password reset',
+    summary: 'Send OTP code to email',
+    description: 'Send OTP verification code to email for registration or password reset',
   })
   @ApiResponse({
     status: 201,
@@ -29,21 +33,16 @@ export class VerificationController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Phone/email already used or code already sent',
+    description: 'Email already used or code already sent',
   })
-  send(@Body() body: sendOtpDto) {
-    if (body.phone) {
-      return this.verificationPhoneService.sendOtp(body);
-    } else if (body.email) {
-      return this.verificationEmailService.sendOtp(body);
-    }
-    throw new Error('Phone or email is required');
+  sendEmailOtp(@Body() body: sendEmailOtpDto) {
+    return this.verificationEmailService.sendOtp(body);
   }
 
-  @Post('verify')
+  @Post('email/verify')
   @ApiOperation({
-    summary: 'Verify OTP code',
-    description: 'Verify OTP code sent to phone or email',
+    summary: 'Verify OTP code for email',
+    description: 'Verify OTP code sent to email',
   })
   @ApiResponse({
     status: 200,
@@ -59,12 +58,52 @@ export class VerificationController {
     status: 400,
     description: 'OTP expired or invalid',
   })
-  verify(@Body() body: verifyOtpDto) {
-    if (body.phone) {
-      return this.verificationPhoneService.verifyOtp(body);
-    } else if (body.email) {
-      return this.verificationEmailService.verifyOtp(body);
-    }
-    throw new Error('Phone or email is required');
+  verifyEmailOtp(@Body() body: verifyEmailOtpDto) {
+    return this.verificationEmailService.verifyOtp(body);
+  }
+
+  @Post('phone/send')
+  @ApiOperation({
+    summary: 'Send OTP code to phone',
+    description: 'Send OTP verification code to phone number for registration or password reset',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'OTP sent successfully',
+    schema: {
+      example: {
+        message: 'Confirmation OTP code send',
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Phone already used or code already sent',
+  })
+  sendPhoneOtp(@Body() body: sendPhoneOtpDto) {
+    return this.verificationPhoneService.sendOtp(body);
+  }
+
+  @Post('phone/verify')
+  @ApiOperation({
+    summary: 'Verify OTP code for phone',
+    description: 'Verify OTP code sent to phone number',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'OTP verified successfully',
+    schema: {
+      example: {
+        message: 'OTP verified successfully',
+        verified: true,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'OTP expired or invalid',
+  })
+  verifyPhoneOtp(@Body() body: verifyPhoneOtpDto) {
+    return this.verificationPhoneService.verifyOtp(body);
   }
 }
