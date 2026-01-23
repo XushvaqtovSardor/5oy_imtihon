@@ -23,7 +23,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: learning_platform
+    container_name: redis
     restart: unless-stopped
     volumes:
       - redis_data:/data
