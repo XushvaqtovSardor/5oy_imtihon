@@ -31,6 +31,10 @@ services:
     depends_on:
       - db
       - redis
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/imthon5?schema=public
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     env_file:
       - .env
     ports:
@@ -39,7 +43,6 @@ services:
       - /var/data/learning_app/uploads_dev:/app/uploads
     networks:
       - app_network
-    command: sh -c "npx prisma db push && exec node dist/main.js"
 
 networks:
   app_network:

@@ -17,7 +17,6 @@ WORKDIR /app
 
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN pnpm prisma generate
 RUN pnpm run build
 RUN pnpm prune --production
 
@@ -32,7 +31,6 @@ COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist  
 COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
 
-RUN npx prisma generate
 RUN mkdir -p /app/uploads && \
     chown -R nodejs:nodejs /app/uploads && \
     chmod -R 755 /app/uploads
@@ -41,4 +39,4 @@ USER nodejs
 EXPOSE 3000
 ENTRYPOINT [ "dumb-init","--" ]
 
-CMD ["sh", "-c", "pnpm prisma db push && exec node dist/main.js"]
+CMD ["sh", "-c", "npx prisma generate && npx prisma db push && exec node dist/main.js"]
