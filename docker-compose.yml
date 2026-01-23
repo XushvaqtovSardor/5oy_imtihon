@@ -1,13 +1,11 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
     image: postgres:16-alpine
+    container_name: 5oy_imtihon-db
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres123}
-      POSTGRES_DB: ${DB_NAME:-learning_platform_db}
+    env_file: .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -15,13 +13,14 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U $DB_USER"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
+    container_name: 5oy_imtihon-redis
     restart: unless-stopped
     volumes:
       - redis_data:/data
@@ -36,22 +35,21 @@ services:
       retries: 5
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: 5oy_imtihon-app
     restart: unless-stopped
-    env_file:
-      - .env
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+    env_file: .env
     ports:
-      - "${PORT:-3000}:3000"
+      - "3000:3000"
     networks:
       - app_network
-    volumes:
-      - ./logs:/app/logs
-      - ./uploads:/app/uploads
 
 networks:
   app_network:
