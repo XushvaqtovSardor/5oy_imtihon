@@ -52,7 +52,7 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
   console.log(`Application is running on: http://165.232.50.236:3000`);
   console.log(`Swagger documentation: http://165.232.50.236:3000/api/docs`);
 }
