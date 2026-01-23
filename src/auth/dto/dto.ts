@@ -76,7 +76,7 @@ export class registerDto {
 
 export class registerWithPhoneDto {
   @ApiProperty({
-    example: '+998901234567',
+    example: '+9989',
     description: 'Phone number for registration',
   })
   @IsString()

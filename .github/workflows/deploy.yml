@@ -36,7 +36,16 @@ jobs:
             docker compose down
 
             echo "Building containers"
-            docker compose build 
+            docker compose build --no-cache app
 
             echo "Running containers"
             docker compose up -d
+
+            echo "Waiting for services to be ready"
+            sleep 10
+
+            echo "Checking container status"
+            docker compose ps
+
+            echo "Checking app logs"
+            docker compose logs --tail=50 app

@@ -5,15 +5,15 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 
-COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
-RUN pnpm prisma migrate deploy
-    
+
+COPY . .
 RUN pnpm build
 
 FROM node:20-alpine AS production
 RUN npm install -g pnpm
+RUN apk add --no-cache postgresql-client
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
@@ -23,7 +23,10 @@ RUN pnpm install --prod --frozen-lockfile
 RUN pnpm prisma generate
 
 COPY --from=builder /app/dist ./dist
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3000
 
-CMD sh -c "npx wait-for-it db:5432 -- pnpm prisma migrate deploy && node dist/main"
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["node", "dist/main"]
