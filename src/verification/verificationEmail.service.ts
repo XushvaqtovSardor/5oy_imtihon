@@ -107,7 +107,7 @@ export class VerificationEmailService {
 
     if (!session) {
       throw new HttpException(
-        'OTP expired or not found',
+        'OTP expired or no t found',
         HttpStatus.BAD_REQUEST,
       );
     }
