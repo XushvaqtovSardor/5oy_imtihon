@@ -27,7 +27,7 @@ export class AuthController {
   })
   @ApiResponse({
     status: 201,
-    description: 'User registered successfully',
+    description: 'User registered  successfully',
     schema: {
       example: {
         message: 'User successfully registered. Go to login to use website',
