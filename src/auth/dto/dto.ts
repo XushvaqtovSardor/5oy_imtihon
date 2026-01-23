@@ -84,20 +84,20 @@ export class registerWithPhoneDto {
   phone: string;
 
   @ApiProperty({
-    example: '123456',
+    example: '1',
     description: 'OTP code received via phone',
   })
   @IsString()
   @IsNotEmpty()
   otp: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Full name of the user' })
+  @ApiProperty({ example: 'ali', description: 'Full name of the user' })
   @IsString()
   @IsNotEmpty()
   fullName: string;
 
   @ApiProperty({
-    example: 'password123',
+    example: 'pass',
     description: 'User password (minimum 8 characters)',
   })
   @IsString()
@@ -132,20 +132,20 @@ export class registerWithEmailDto {
   email: string;
 
   @ApiProperty({
-    example: '123456',
+    example: '3',
     description: 'OTP code received via email',
   })
   @IsString()
   @IsNotEmpty()
   otp: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Full name of the user' })
+  @ApiProperty({ example: 'ali', description: 'Full name of the user' })
   @IsString()
   @IsNotEmpty()
   fullName: string;
 
   @ApiProperty({
-    example: 'password123',
+    example: 'pass',
     description: 'User password (minimum 8 characters)',
   })
   @IsString()
@@ -294,7 +294,7 @@ export class loginWithEmailDto {
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ example: 'password123', description: 'User password' })
+  @ApiProperty({ example: 'pass', description: 'User password' })
   @IsString()
   @IsNotEmpty()
   password: string;
@@ -354,7 +354,7 @@ export class verifyEmailOtpDto {
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ example: '123456', description: 'OTP code to verify' })
+  @ApiProperty({ example: '1', description: 'OTP code to verify' })
   @IsString()
   @IsNotEmpty()
   otp: string;
@@ -370,14 +370,14 @@ export class verifyPhoneOtpDto {
   type: EVerificationTypes;
 
   @ApiProperty({
-    example: '+998901234567',
+    example: '+9989',
     description: 'Phone number to verify',
   })
   @IsString()
   @IsNotEmpty()
   phone: string;
 
-  @ApiProperty({ example: '123456', description: 'OTP code to verify' })
+  @ApiProperty({ example: '1', description: 'OTP code to verify' })
   @IsString()
   @IsNotEmpty()
   otp: string;
@@ -398,7 +398,7 @@ export class resetPasswordDto {
   otp: string;
 
   @ApiPropertyOptional({
-    example: '+998901122333',
+    example: '+9989',
     description: 'Phone number for password reset',
   })
   @IsString()
@@ -416,7 +416,7 @@ export class resetPasswordDto {
 
 export class resetPasswordWithPhoneDto {
   @ApiProperty({
-    example: '+998901234567',
+    example: '+9989',
     description: 'Phone number for password reset',
   })
   @IsString()
@@ -429,7 +429,7 @@ export class resetPasswordWithPhoneDto {
   otp: string;
 
   @ApiProperty({
-    example: 'newPassword123',
+    example: 'newPass',
     description: 'New password for account',
   })
   @IsString()
@@ -446,13 +446,13 @@ export class resetPasswordWithEmailDto {
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ example: '123456', description: 'OTP code for verification' })
+  @ApiProperty({ example: '1', description: 'OTP code for verification' })
   @IsString()
   @IsNotEmpty()
   otp: string;
 
   @ApiProperty({
-    example: 'newPassword123',
+    example: 'newPass',
     description: 'New password for account',
   })
   @IsString()
