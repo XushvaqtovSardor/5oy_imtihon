@@ -264,14 +264,14 @@ export class LoginDto {
 
 export class loginWithPhoneDto {
   @ApiProperty({
-    example: '+998901234567',
+    example: '+9989',
     description: 'Phone number for login',
   })
   @IsString()
   @IsNotEmpty()
   phone: string;
 
-  @ApiProperty({ example: 'password123', description: 'User password' })
+  @ApiProperty({ example: 'pass', description: 'User password' })
   @IsString()
   @IsNotEmpty()
   password: string;

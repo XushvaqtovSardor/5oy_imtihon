@@ -25,4 +25,4 @@ COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD sh -c "pnpm prisma migrate deploy && node dist/main"
+CMD sh -c "npx wait-for-it db:5432 -- pnpm prisma migrate deploy && node dist/main"
