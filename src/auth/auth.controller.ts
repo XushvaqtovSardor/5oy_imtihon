@@ -1,9 +1,7 @@
 import {
   Body,
   Controller,
-  Post,
-  HttpException,
-  HttpStatus,
+  Post
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -33,11 +31,11 @@ export class AuthController {
     description: 'User registered successfully',
     schema: {
       example: {
-        message: 'User successfully registered. Go to login to use website',
+        message: 'User successfully registered Go to login to use website',
         user: {
           id: 1,
-          phone: '+998902400025',
-          fullName: 'John Doe',
+          phone: '+9989',
+          fullName: 'f',
           role: 'STUDENT',
           deviceName: ['iPhone 13'],
         },
@@ -63,11 +61,11 @@ export class AuthController {
     description: 'User registered successfully',
     schema: {
       example: {
-        message: 'User successfully registered. Go to login to use website',
+        message: 'User successfully registered Go to login to use website',
         user: {
           id: 1,
           email: 'sardor@gmail.com',
-          fullName: 'John Doe',
+          fullName: 'f',
           role: 'STUDENT',
           deviceName: ['iPhone 13'],
         },
@@ -96,12 +94,12 @@ export class AuthController {
         message: 'Login successful',
         user: {
           id: 1,
-          phone: '+998902400025',
-          fullName: 'John Doe',
+          phone: '+9989',
+          fullName: 'f',
           role: 'STUDENT',
         },
-        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        accessToken: 'e',
+        refreshToken: 'e',
       },
     },
   })
@@ -125,11 +123,11 @@ export class AuthController {
         user: {
           id: 1,
           email: 'user@example.com',
-          fullName: 'John Doe',
+          fullName: 'f',
           role: 'STUDENT',
         },
-        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        accessToken: 'e',
+        refreshToken: 'e',
       },
     },
   })
@@ -138,7 +136,7 @@ export class AuthController {
     return this.authService.loginEmail(dto);
   }
 
-  @Post('refresh-token')
+  @Post('refreshToken')
   @ApiOperation({
     summary: 'Refresh access token',
     description: 'Get a new access token using refresh token',
@@ -149,8 +147,8 @@ export class AuthController {
     schema: {
       example: {
         message: 'Token refreshed successfully',
-        accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
-        refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        accessToken: 'e',
+        refreshToken: 'e',
       },
     },
   })
@@ -159,7 +157,7 @@ export class AuthController {
     return this.authService.refreshToken(dto.token, dto.deviceToken);
   }
 
-  @Post('reset-password/phone')
+  @Post('resetPassword/phone')
   @ApiOperation({
     summary: 'Reset password with phone',
     description:
@@ -177,7 +175,7 @@ export class AuthController {
     return this.authService.resetPasswordPhone(dto);
   }
 
-  @Post('reset-password/email')
+  @Post('resetPassword/email')
   @ApiOperation({
     summary: 'Reset password with email',
     description:
