@@ -8,6 +8,7 @@ COPY prisma ./prisma
 COPY . .
 RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
+RUN pnpm prisma migrate deploy
     
 RUN pnpm build
 
