@@ -47,7 +47,8 @@ enum PaidVia {
 
 model users {
   id              Int               @id @default(autoincrement())
-  phone           String
+  phone           String?
+  email           String?
   password        String
   role            UserRole          @default(STUDENT)
   fullName        String
