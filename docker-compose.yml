@@ -3,7 +3,6 @@ version: '3.8'
 services:
   db:
     image: postgres:16-alpine
-    container_name: learning_platform_db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
@@ -16,14 +15,13 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: redis
     restart: unless-stopped
     volumes:
       - redis_data:/data
@@ -38,11 +36,10 @@ services:
       retries: 5
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: learning_platform_app
+    build: .
     restart: unless-stopped
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
@@ -50,44 +47,18 @@ services:
         condition: service_healthy
     ports:
       - "${PORT:-3000}:3000"
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
-      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres123}@db:5432/${DB_NAME:-learning_platform_db}?schema=public
-      DB_USER: ${DB_USER:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres123}
-      DB_NAME: ${DB_NAME:-learning_platform_db}
-      DB_HOST: db
-      DB_PORT: 5432
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
-      MAIL_HOST: ${MAIL_HOST}
-      MAIL_PORT: ${MAIL_PORT}
-      MAIL_USER: ${MAIL_USER}
-      MAIL_PASSWORD: ${MAIL_PASSWORD}
-      MAIL_FROM: ${MAIL_FROM}
-      SMS_API_KEY: ${SMS_API_KEY}
-      SMS_API_SECRET: ${SMS_API_SECRET}
-      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
-      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
-      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+    networks:
+      - app_network
     volumes:
       - ./logs:/app/logs
       - ./uploads:/app/uploads
-    networks:
-      - app_network
 
 networks:
   app_network:
     driver: bridge
-    name: learning_platform_network
 
 volumes:
   postgres_data:
     driver: local
-    name: learning_platform_postgres_data
   redis_data:
     driver: local
-    name: learning_platform_redis_data

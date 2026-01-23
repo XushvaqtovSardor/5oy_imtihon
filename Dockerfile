@@ -4,27 +4,24 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-
 RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
 
 COPY . .
 RUN pnpm build
 
-FROM node:20-alpine AS production
+FROM node:20-alpine
 RUN npm install -g pnpm
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash postgresql-client
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --prod --frozen-lockfile
 RUN pnpm prisma generate
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 3000
+EXPOSE ${PORT:-3000}
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
-
+CMD sh -c "npx wait-for-it \$DB_HOST:\$DB_PORT -- pnpm prisma migrate deploy && node dist/main"
