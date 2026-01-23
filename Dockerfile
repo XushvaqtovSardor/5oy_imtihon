@@ -32,8 +32,10 @@ RUN mkdir -p /app/uploads && \
     chown -R nodejs:nodejs /app/uploads && \
     chmod -R 755 /app/uploads
 
-USER nodejs
 
+USER nodejs
+ENV PNPM_HOME="/home/node/.local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 EXPOSE 3000
 ENTRYPOINT [ "dumb-init","--" ]
 
