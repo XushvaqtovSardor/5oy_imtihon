@@ -15,8 +15,6 @@ export enum UserRole {
   ASSISTANT = 'ASSISTANT',
   STUDENT = 'STUDENT',
 }
-
-// Import Prisma UserRole for runtime compatibility
 import { UserRole as PrismaUserRole } from '@prisma/client';
 export { PrismaUserRole };
 
@@ -45,13 +43,13 @@ export class registerDto {
   @IsNotEmpty()
   otp: string;
 
-  @ApiProperty({ example: 'John Doe', description: 'Full name of the user' })
+  @ApiProperty({ example: 'sardor', description: 'Full name of the user' })
   @IsString()
   @IsNotEmpty()
   fullName: string;
 
   @ApiProperty({
-    example: 'Password123!',
+    example: '12234',
     description: 'User password (minimum 8 characters)',
   })
   @IsString()
@@ -103,7 +101,7 @@ export class sendOtpDto {
 }
 export class LoginDto {
   @ApiPropertyOptional({
-    example: '+998952324123',
+    example: '+9989',
     description: 'Phone number for login',
   })
   @IsString()
@@ -141,7 +139,7 @@ export class verifyOtpDto {
   type: EVerificationTypes;
 
   @ApiPropertyOptional({
-    example: '+998900102003',
+    example: '+9989',
     description: 'Phone number to verify',
   })
   @IsString()
@@ -156,14 +154,14 @@ export class verifyOtpDto {
   @IsOptional()
   email?: string;
 
-  @ApiProperty({ example: '123456', description: 'OTP code to verify' })
+  @ApiProperty({ example: '222', description: 'OTP code to verify' })
   @IsString()
   otp: string;
 }
 
 export class resetPasswordDto {
   @ApiProperty({
-    example: 'passwordNew',
+    example: 'fsad',
     description: 'New password for account',
   })
   @IsString()
