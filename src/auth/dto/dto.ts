@@ -224,7 +224,7 @@ export class sendPhoneOtpDto {
   type: EVerificationTypes;
 
   @ApiProperty({
-    example: '+998901234567',
+    example: '+9989',
     description: 'Phone number to send OTP',
   })
   @IsString()
