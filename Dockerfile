@@ -16,6 +16,10 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
+
+RUN pnpm install --frozen-lockfile
+RUN pnpm prisma generate
+
 COPY --from=builder /app/dist ./dist
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh

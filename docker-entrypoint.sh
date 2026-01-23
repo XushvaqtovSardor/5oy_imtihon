@@ -20,7 +20,7 @@ until pg_isready -h $DB_HOST -U $DB_USER -d $DB_NAME; do
 done
 
 echo "PostgreSQL is up - executing migrations"
-pnpm prisma migrate deploy
+npx prisma migrate deploy
 
 echo "Starting application..."
 exec "$@"
