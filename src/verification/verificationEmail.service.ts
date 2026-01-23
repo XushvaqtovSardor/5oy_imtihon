@@ -126,6 +126,6 @@ export class VerificationEmailService {
       600,
     );
 
-    return { message: 'OTP verified successfully', verified: true };
+    return { message: 'OTP verified  successfully', verified: true };
   }
 }
