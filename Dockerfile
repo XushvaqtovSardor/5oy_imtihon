@@ -1,32 +1,44 @@
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS dependencies
 
 RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-COPY prisma ./prisma
+COPY package*.json ./
+RUN pnpm install && pnpm cache clean --force
 
-RUN pnpm install --frozen-lockfile
-RUN pnpm prisma generate
 
+FROM node:22-alpine AS builder
+
+RUN npm install -g pnpm
+WORKDIR /app
+
+
+
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN pnpm build
-
-FROM node:20-alpine AS production
-
-RUN npm install -g pnpm
-RUN apk add --no-cache bash postgresql-client
-
-WORKDIR /app
-
-COPY package.json pnpm-lock.yaml ./
-COPY prisma ./prisma
-RUN pnpm install --prod --frozen-lockfile
 RUN pnpm prisma generate
+RUN pnpm run build
+RUN pnpm prune --production
 
-COPY --from=builder /app/dist ./dist
+FROM node:22-alpine as production
+WORKDIR /app
+RUN apk add --no-cache curl dumb-init
+RUN addgroup -g 1001 -S nodejs && \
+    adduser  -S nodejs -u 1001
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
+
+COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist  
+COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
+
+RUN npx prisma generate
+RUN mkdir -p /app/uploads && \
+    chown -R nodejs:nodejs /app/uploads && \
+    chmod -R 755 /app/uploads
+USER nodejs
 
 EXPOSE 3000
+ENTRYPOINT [ "dumb-init","--" ]
 
-CMD ["sh", "-c", "pnpm prisma migrate deploy && node dist/main"]
+CMD ["sh", "-c", "pnpm prisma db push && exec node dist/main.js"]
