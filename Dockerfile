@@ -37,4 +37,4 @@ USER nodejs
 EXPOSE 3000
 ENTRYPOINT [ "dumb-init","--" ]
 
-CMD ["sh", "-c", "pnpm prisma generate && pnpm prisma db push && exec node dist/main.js"]
+CMD ["sh", "-c", "pnpm prisma migrate deploy && node dist/main.js"]
