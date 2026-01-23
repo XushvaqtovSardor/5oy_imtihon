@@ -1,4 +1,5 @@
 name: deploy CI/CD project
+
 on:
   push:
     branches:
@@ -19,18 +20,24 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            set -e
+
             echo "Creating project folder if it doesn't exist!"
             mkdir -p /root
             cd /root
 
             if [ ! -d "5oy_imtihon/.git" ]; then
-              echo "Cloning repository!" 
+              echo "Cloning repository!"
               git clone https://github.com/XushvaqtovSardor/5oy_imtihon
             else
               echo "Pulling latest changes!"
               cd 5oy_imtihon
-              git pull origin main  
+              git pull origin main
+              cd ..
             fi
+
+            # ALWAYS enter project directory
+            cd 5oy_imtihon
 
             echo "Stopping containers"
             docker compose down
