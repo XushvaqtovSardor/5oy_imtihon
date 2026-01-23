@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
-
+RUN npx prisma migrate de
 RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
 
