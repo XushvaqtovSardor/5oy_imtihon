@@ -1,24 +1,18 @@
-FROM node:22-alpine as production
-WORKDIR /app
+FROM node:22-alpine
 
-RUN npm install -g pnpm \
-    && apk add --no-cache curl dumb-init \
-    && addgroup -g 1001 -S nodejs \
-    && adduser -S -u 1001 nodejs
+    WORKDIR /app 
 
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist  
-COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
+    COPY package*.json ./
+    RUN npm i -g pnpm
+    RUN pnpm install
 
-RUN mkdir -p /app/uploads && \
-    chown -R nodejs:nodejs /app/uploads && \
-    chmod -R 755 /app/uploads
+    COPY . . 
 
-USER nodejs
-ENV PNPM_HOME="/home/node/.local/share/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+    RUN npx prisma generate
 
-EXPOSE 3000
-ENTRYPOINT [ "dumb-init","--" ]
-CMD ["sh", "-c", "pnpm prisma db push && exec node dist/main.js"]
+    RUN pnpm run build
+
+    EXPOSE 4000
+
+    CMD ["pnpm","run","start:prod"]
+        
