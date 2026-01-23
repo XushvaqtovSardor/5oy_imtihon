@@ -34,9 +34,6 @@ RUN mkdir -p /app/uploads && \
 
 
 USER nodejs
-ENV PNPM_HOME="/home/node/.local/share/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-EXPOSE 3000
-ENTRYPOINT [ "dumb-init","--" ]
 
-CMD ["sh", "-c", "pnpm prisma migrate deploy && node dist/main.js"]
+
+CMD ["sh", "-c", "pnpm prisma db push && exec node dist/main.js"]
