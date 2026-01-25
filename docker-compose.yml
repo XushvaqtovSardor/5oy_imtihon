@@ -34,7 +34,7 @@ services:
       sh -c "
         npx prisma generate &&
         npx prisma migrate deploy &&
-        pnpm run start:prod
+        pnpm run start:dev
       "
     environment:
       DATABASE_URL: postgres://postgres:12345@db:5432/imtihon_5oy
