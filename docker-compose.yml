@@ -1,52 +1,22 @@
 version: '3.9'
+
 services:
-  db:
-    image: postgres:16
-    container_name: learning_db
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: imthon5
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    networks:
-      - app_network
-
-  redis:
-    image: redis:7
-    container_name: learning_redis
-    restart: always
-    ports:
-      - "6379:6379"
-    networks:
-      - app_network
-
   app:
     build: .
-    container_name: learning_app
+    container_name: durdon_app
     restart: always
-    depends_on:
-      - db
-      - redis
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/imthon5?schema=public
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+      DATABASE_URL: postgresql://postgres:postgres@learning_db:5432/durdon_bot?schema=public
     env_file:
       - .env
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
-      - /var/data/learning_app/uploads_dev:/app/uploads
+      - /var/data/learning_app_new/uploads_dev:/app/uploads
     networks:
       - app_network
 
 networks:
   app_network:
-    driver: bridge
-
-volumes:
-  postgres_data:
+    external: true
+    name: default

@@ -9,7 +9,7 @@ import { ProfileModule } from './profile/profile.module';
 import { CourseModule } from './course/course.module';
 import { CourseCategoryModule } from './course-category/course-category.module';
 import { LessonModule } from './lesson/lesson.module';
-import { LessonSectionModule } from './lesson-section/lesson-section.module';
+import { LessonSectionModule } from './lessonSection/lesson-section.module';
 import { HomeworkModule } from './homework/homework.module';
 import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';

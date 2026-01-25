@@ -31,7 +31,7 @@ export class UpdatePhoneDto {
   otp: string;
 
   @ApiProperty({
-    example: '+99890112233',
+    example: '+9989',
     description: 'New phone number',
   })
   @IsString()
@@ -41,7 +41,7 @@ export class UpdatePhoneDto {
 
 export class UpdatePasswordDto {
   @ApiProperty({
-    example: 'OldPassword123!',
+    example: 'OldPass',
     description: 'Current password',
   })
   @IsString()
@@ -49,7 +49,7 @@ export class UpdatePasswordDto {
   password: string;
 
   @ApiProperty({
-    example: 'NewPassword123!',
+    example: 'NewPass',
     description: 'New password',
   })
   @IsString()

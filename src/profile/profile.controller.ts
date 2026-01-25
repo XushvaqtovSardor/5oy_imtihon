@@ -49,10 +49,10 @@ export class ProfileController {
     schema: {
       example: {
         id: 1,
-        phone: '+998902400025',
-        email: 'user@example.com',
-        fullName: 'John Doe',
-        image: 'https://res.cloudinary.com/...',
+        phone: '+9989',
+        email: 'sardor@gmail.com',
+        fullName: 'ali',
+        image: 'f',
         role: 'STUDENT',
         deviceName: ['iPhone 13'],
         createdAt: '2024-01-01T00:00:00.000Z',
