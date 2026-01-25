@@ -2,7 +2,7 @@ version: '3.9'
 services:
   db:
     image: postgres:16
-    container_name: learning_db
+    container_name: imthon_db
     restart: always
     environment:
       POSTGRES_USER: postgres
