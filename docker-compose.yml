@@ -5,8 +5,8 @@ services:
     container_name: imthon_db
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: imtihon
+      POSTGRES_PASSWORD: imtihon
       POSTGRES_DB: imthon5
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -32,7 +32,7 @@ services:
       - db
       - redis
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/imthon5?schema=public
+      DATABASE_URL: postgresql://imtihon:imtihon@db:5432/imthon5?schema=public
       REDIS_HOST: redis
       REDIS_PORT: 6379
     env_file:
