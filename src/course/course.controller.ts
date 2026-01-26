@@ -33,22 +33,6 @@ export class CourseController {
 
   constructor(private readonly courseService: CourseService) {}
 
-  @Post('create')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN, UserRole.MENTOR)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create a new course (ADMIN, MENTOR only)' })
-  @ApiResponse({
-    status: 201,
-    description: 'Course created successfully',
-  })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 403, description: 'Forbidden' })
-  create(@Body() createCourseDto: CreateCourseDto) {
-    this.logger.log('Creating new course');
-    return this.courseService.create(createCourseDto);
-  }
-
   @Get()
   @ApiOperation({
     summary: 'Get all courses with filters',
@@ -63,15 +47,15 @@ export class CourseController {
         data: [
           {
             id: 'uuid',
-            name: 'JavaScript Basics',
-            about: 'Learn JavaScript from scratch',
-            price: '99.99',
-            level: 'BEGINNER',
-            banner: 'url',
-            introVideo: 'url',
+            name: 'JavaScript',
+            about: 'Learn JavaScript',
+            price: '$9',
+            level: 'intermidate',
+            banner: 'http',
+            introVideo: 'http',
             published: true,
-            categoryId: 'category-uuid',
-            mentorId: 'mentor-uuid',
+            categoryId: 'id',
+            mentorId: 'id',
           },
         ],
         total: 100,
@@ -160,11 +144,26 @@ export class CourseController {
     return this.courseService.findOne(id);
   }
 
+  @Post('create')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.MENTOR)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'ADMIN, MENTOR' })
+  @ApiResponse({
+    status: 201,
+    description: 'Course created successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
+  create(@Body() createCourseDto: CreateCourseDto) {
+    this.logger.log('Creating new course');
+    return this.courseService.create(createCourseDto);
+  }
   @Patch('update/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update course (ADMIN, MENTOR only)' })
+  @ApiOperation({ summary: 'ADMIN, MENTOR' })
   @ApiResponse({ status: 200, description: 'Course updated successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })
@@ -178,7 +177,7 @@ export class CourseController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Publish a course (ADMIN only)' })
+  @ApiOperation({ summary: ' ADMIN' })
   @ApiResponse({ status: 200, description: 'Course published successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
@@ -192,7 +191,7 @@ export class CourseController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Unpublish a course (ADMIN only)' })
+  @ApiOperation({ summary: 'ADMIN' })
   @ApiResponse({ status: 200, description: 'Course unpublished successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden - Admin only' })
@@ -206,7 +205,7 @@ export class CourseController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update mentor for a course (ADMIN only)' })
+  @ApiOperation({ summary: 'ADMIN' })
   @ApiResponse({
     status: 200,
     description: 'Course mentor updated successfully',
@@ -222,7 +221,7 @@ export class CourseController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete course (ADMIN, MENTOR only)' })
+  @ApiOperation({ summary: 'ADMIN, MENTOR' })
   @ApiResponse({ status: 200, description: 'Course deleted successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Forbidden' })

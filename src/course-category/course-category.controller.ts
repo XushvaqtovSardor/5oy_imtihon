@@ -27,13 +27,13 @@ export class CourseCategoryController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create a new course category' })
+  @ApiOperation({ summary: 'ADMIN' })
   create(@Body() createCourseCategoryDto: CreateCourseCategoryDto) {
     return this.courseCategoryService.create(createCourseCategoryDto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all course categories' })
+  @ApiOperation({ summary: 'Get all courses' })
   findAll() {
     return this.courseCategoryService.findAll();
   }
@@ -48,7 +48,7 @@ export class CourseCategoryController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update course category' })
+  @ApiOperation({ summary: 'ADMIN' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCourseCategoryDto: UpdateCourseCategoryDto,
@@ -60,7 +60,7 @@ export class CourseCategoryController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete course category' })
+  @ApiOperation({ summary: 'ADMIN' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.courseCategoryService.remove(id);
   }

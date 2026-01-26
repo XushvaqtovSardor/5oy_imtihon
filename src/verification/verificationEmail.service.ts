@@ -90,8 +90,8 @@ export class VerificationEmailService {
         break;
     }
     const otp = generateOtp();
-    await this.redis.set(key, JSON.stringify(otp), 600);
     await this.mailService.sendEmail(email, this.getSubject(type), +otp);
+    await this.redis.set(key, JSON.stringify(otp), 600);
     return { message: 'Confirmation OTP code send' };
   }
 

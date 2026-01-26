@@ -26,8 +26,6 @@ export class CloudinaryService {
       api_key: apiKey,
       api_secret: apiSecret,
     });
-
-    this.logger.log('Cloudinary configured successfully');
   }
 
   async uploadImage(file: Express.Multer.File): Promise<string> {
@@ -40,10 +38,6 @@ export class CloudinaryService {
       this.logger.error('Upload failed: File buffer is empty');
       throw new HttpException('File buffer is empty', HttpStatus.BAD_REQUEST);
     }
-
-    this.logger.log(
-      `Uploading file: ${file.originalname}, size: ${file.size} bytes`,
-    );
 
     return new Promise((resolve, reject) => {
       cloudinary.uploader
@@ -64,9 +58,6 @@ export class CloudinaryService {
                 ),
               );
             } else if (result) {
-              this.logger.log(
-                `File uploaded successfully: ${result.secure_url}`,
-              );
               resolve(result.secure_url);
             } else {
               this.logger.error(

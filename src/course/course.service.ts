@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Logger,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -13,7 +19,40 @@ export class CourseService {
 
   async create(createCourseDto: CreateCourseDto) {
     try {
-      this.logger.log(`Creating course: ${createCourseDto.name}`);
+      if (!createCourseDto.mentorId) {
+        throw new HttpException(
+          'Mentor ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const mentorId = await this.prisma.users.findFirst({
+        where: { id: createCourseDto.mentorId },
+      });
+      if (!mentorId) {
+        throw new HttpException(
+          `Mentor with ID ${createCourseDto.mentorId} not found`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      if (!createCourseDto.categoryId) {
+        throw new HttpException(
+          'Category ID is required',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const categoryId = await this.prisma.courseCategory.findFirst({
+        where: { id: createCourseDto.categoryId },
+      });
+      if (!categoryId) {
+        throw new HttpException(
+          `Category with ID ${createCourseDto.categoryId} not found`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
       const course = await this.prisma.course.create({
         data: {
           ...createCourseDto,
@@ -24,7 +63,6 @@ export class CourseService {
           mentor: true,
         },
       });
-      this.logger.log(`Course created successfully with ID: ${course.id}`);
       return course;
     } catch (error) {
       this.logger.error(`Failed to create course: ${JSON.stringify(error)}`);
@@ -45,10 +83,6 @@ export class CourseService {
         price_max,
         published = true,
       } = filterDto;
-
-      this.logger.log(
-        `Finding courses with filters: ${JSON.stringify(filterDto)}`,
-      );
 
       const where: Prisma.CourseWhereInput = {
         published: published,
@@ -120,8 +154,6 @@ export class CourseService {
         this.prisma.course.count({ where }),
       ]);
 
-      this.logger.log(`Found ${data.length} courses out of ${total} total`);
-
       return {
         data,
         total,
@@ -136,7 +168,6 @@ export class CourseService {
 
   async findAllAdmin() {
     try {
-      this.logger.log('Admin fetching all courses');
       const courses = await this.prisma.course.findMany({
         include: {
           category: true,
@@ -147,7 +178,6 @@ export class CourseService {
           createdAt: 'desc',
         },
       });
-      this.logger.log(`Found ${courses.length} courses`);
       return courses;
     } catch (error) {
       this.logger.error(
@@ -160,6 +190,13 @@ export class CourseService {
   async findOne(id: string) {
     try {
       this.logger.log(`Finding course with ID: ${id}`);
+      const uuidRegex =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(id)) {
+        throw new NotFoundException(
+          `Invalid course ID format: ${id}. Expected UUID format.`,
+        );
+      }
       const course = await this.prisma.course.findUnique({
         where: { id },
         include: {

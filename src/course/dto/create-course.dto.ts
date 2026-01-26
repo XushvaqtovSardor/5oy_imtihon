@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsDecimal, IsBoolean, IsInt, IsEnum, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsDecimal,
+  IsBoolean,
+  IsInt,
+  IsEnum,
+  IsOptional,
+} from 'class-validator';
 import { CourseLevel } from '@prisma/client';
 
 export class CreateCourseDto {
@@ -22,7 +30,11 @@ export class CreateCourseDto {
   @IsNotEmpty()
   banner: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({
+    required: false,
+    description: 'URL link to intro video (YouTube, Vimeo, etc.)',
+    example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+  })
   @IsString()
   @IsOptional()
   introVedio?: string;
@@ -32,7 +44,7 @@ export class CreateCourseDto {
   @IsNotEmpty()
   level: CourseLevel;
 
-  @ApiProperty({ default: false })
+  @ApiProperty({ default: true })
   @IsBoolean()
   @IsOptional()
   published?: boolean;

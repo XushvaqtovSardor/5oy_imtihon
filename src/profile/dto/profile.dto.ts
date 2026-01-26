@@ -15,13 +15,6 @@ export class UpdateProfileDto {
   @IsString()
   @IsOptional()
   fullName?: string;
-
-  @ApiPropertyOptional({
-    type: 'string',
-    format: 'binary',
-    description: 'Profile image file',
-  })
-  image?: any;
 }
 
 export class UpdatePhoneDto {
@@ -58,13 +51,13 @@ export class UpdatePasswordDto {
 }
 
 export class UpdateMentorProfileDto {
-  @ApiProperty({ example: 3, description: 'Years of experience' })
+  @ApiProperty({ example: 0.2, description: 'Years of experience' })
   @IsInt()
   @IsNotEmpty()
   experience: number;
 
   @ApiProperty({
-    example: 'Full-stack software engineer',
+    example: 'software engineer',
     description: 'Current job title',
   })
   @IsString()
@@ -72,7 +65,7 @@ export class UpdateMentorProfileDto {
   job: string;
 
   @ApiPropertyOptional({
-    example: 'Experienced software developer...',
+    example: 'IT Club mentor',
     description: 'About the mentor',
   })
   @IsString()
@@ -80,7 +73,7 @@ export class UpdateMentorProfileDto {
   about?: string;
 
   @ApiPropertyOptional({
-    example: 'https://t.me/username',
+    example: 'http',
     description: 'Telegram profile URL',
   })
   @IsUrl()
@@ -88,7 +81,7 @@ export class UpdateMentorProfileDto {
   telegram?: string;
 
   @ApiPropertyOptional({
-    example: 'https://facebook.com/username',
+    example: 'http',
     description: 'Facebook profile URL',
   })
   @IsUrl()
@@ -96,7 +89,7 @@ export class UpdateMentorProfileDto {
   facebook?: string;
 
   @ApiPropertyOptional({
-    example: 'https://instagram.com/username',
+    example: 'http',
     description: 'Instagram profile URL',
   })
   @IsUrl()
@@ -104,7 +97,7 @@ export class UpdateMentorProfileDto {
   instagram?: string;
 
   @ApiPropertyOptional({
-    example: 'https://linkedin.com/in/username',
+    example: 'http',
     description: 'LinkedIn profile URL',
   })
   @IsUrl()
@@ -112,7 +105,7 @@ export class UpdateMentorProfileDto {
   linkedin?: string;
 
   @ApiPropertyOptional({
-    example: 'https://github.com/username',
+    example: 'http',
     description: 'GitHub profile URL',
   })
   @IsUrl()
@@ -120,7 +113,7 @@ export class UpdateMentorProfileDto {
   github?: string;
 
   @ApiPropertyOptional({
-    example: 'https://mywebsite.com',
+    example: 'http',
     description: 'Personal website URL',
   })
   @IsUrl()
@@ -130,7 +123,7 @@ export class UpdateMentorProfileDto {
 
 export class UpdateLastActivityDto {
   @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    example: 'uuid',
     description: 'Course UUID',
   })
   @IsString()
@@ -146,7 +139,7 @@ export class UpdateLastActivityDto {
   groupId: number;
 
   @ApiProperty({
-    example: '123e4567-e89b-12d3-a456-426614174001',
+    example: 'uuid',
     description: 'Lesson UUID',
   })
   @IsString()
@@ -154,7 +147,7 @@ export class UpdateLastActivityDto {
   lessonId: string;
 
   @ApiProperty({
-    example: 'https://example.com/lesson',
+    example: 'http',
     description: 'Lesson URL',
   })
   @IsUrl()

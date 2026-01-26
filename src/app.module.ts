@@ -15,6 +15,11 @@ import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';
 import { ProjectModule } from './project/project.module';
 import { RatingModule } from './rating/rating.module';
+import { PaymentModule } from './payment/payment.module';
+import { ContactModule } from './contact/contact.module';
+import { FilesModule } from './files/files.module';
+import { LessonFilesModule } from './lesson-files/lesson-files.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -27,15 +32,20 @@ import { RatingModule } from './rating/rating.module';
     MailerModule,
     DeviceModule,
     ProfileModule,
+    UsersModule,
     CourseModule,
     CourseCategoryModule,
     LessonModule,
     LessonSectionModule,
+    LessonFilesModule,
     HomeworkModule,
     ExamModule,
     QuestionModule,
     ProjectModule,
     RatingModule,
+    PaymentModule,
+    ContactModule,
+    FilesModule,
   ],
 })
 export class AppModule {}

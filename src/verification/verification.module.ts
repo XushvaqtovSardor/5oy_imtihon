@@ -12,20 +12,22 @@ import { SmsService } from 'src/service/sms.service';
 @Global()
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
     NestMailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         transport: {
-          service: 'gmail',
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          requireTLS: true,
           auth: {
             user: config.get<string>('MAIL_USER'),
             pass: config.get<string>('MAIL_PASS'),
           },
         },
         defaults: {
-          from: '<N25>',
+          from: `"N25" <${config.get('MAIL_USER')}>`,
         },
         template: {
           dir: join(process.cwd(), 'src', 'common', 'template'),

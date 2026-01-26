@@ -25,8 +25,7 @@ export class DeviceController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get all devices',
-    description: 'Get list of all registered devices for the logged-in user',
+    summary: 'ALL',
   })
   @ApiResponse({
     status: 200,
@@ -45,7 +44,7 @@ export class DeviceController {
 
   @Delete(':deviceToken')
   @ApiOperation({
-    summary: 'Delete a device',
+    summary: 'ALL',
     description: 'Remove a device from user account by device token',
   })
   @ApiParam({

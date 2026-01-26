@@ -1,5 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import {
   registerWithPhoneDto,
@@ -100,8 +101,24 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  loginWithPhone(@Body() dto: loginWithPhoneDto) {
-    return this.authService.loginPhone(dto);
+  async loginWithPhone(
+    @Body() dto: loginWithPhoneDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.loginPhone(dto);
+
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return {
+      message: result.message,
+      user: result.user,
+      accessToken: result.accessToken,
+    };
   }
 
   @Post('login/email')
@@ -128,8 +145,24 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
-  loginWithEmail(@Body() dto: loginWithEmailDto) {
-    return this.authService.loginEmail(dto);
+  async loginWithEmail(
+    @Body() dto: loginWithEmailDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.loginEmail(dto);
+
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return {
+      message: result.message,
+      user: result.user,
+      accessToken: result.accessToken,
+    };
   }
 
   @Post('refreshToken')
@@ -149,8 +182,14 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Invalid or expired refresh token' })
-  refreshToken(@Body() dto: RefreshTokenDto) {
-    return this.authService.refreshToken(dto.token, dto.deviceToken);
+  async refreshToken(@Req() req: Request, @Body() dto: RefreshTokenDto) {
+    const refreshToken = req.cookies?.refreshToken || dto.token;
+
+    if (!refreshToken) {
+      throw new Error('Refresh token not found');
+    }
+
+    return this.authService.refreshToken(refreshToken, dto.deviceToken);
   }
 
   @Post('resetPassword/phone')
@@ -187,5 +226,27 @@ export class AuthController {
   @ApiResponse({ status: 400, description: 'Not verified or user not found' })
   resetPasswordWithEmail(@Body() dto: resetPasswordWithEmailDto) {
     return this.authService.resetPasswordEmail(dto);
+  }
+
+  @Post('logout')
+  @ApiOperation({
+    summary: 'Logout',
+    description: 'Clear refresh token cookie and logout user',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Logged out successfully',
+    schema: {
+      example: { message: 'Logged out successfully' },
+    },
+  })
+  async logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    return { message: 'Logged out successfully' };
   }
 }

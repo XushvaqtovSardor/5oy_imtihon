@@ -24,44 +24,72 @@ import { UserRole } from '@prisma/client';
 export class ExamController {
   constructor(private readonly examService: ExamService) {}
 
-  @Post()
+  // STUDENT: Get exams by lesson group
+  @Get('lesson-group/:lessonGroupId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'STUDENT: Get exams by lesson group' })
+  findByLessonGroup(
+    @Param('lessonGroupId', ParseIntPipe) lessonGroupId: number,
+  ) {
+    return this.examService.findByLessonGroup(lessonGroupId);
+  }
+
+  // STUDENT: Submit exam result
+  @Post('pass')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'STUDENT: Submit exam result' })
+  submitExam(@Body() createResultDto: CreateExamResultDto) {
+    return this.examService.createResult(createResultDto);
+  }
+
+  // MENTOR/ADMIN: Get exam details by lesson group
+  @Get('lesson-group/details/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MENTOR, UserRole.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'MENTOR, ADMIN: Get exam details by lesson group' })
+  findDetailsByLessonGroup(@Param('id', ParseIntPipe) id: number) {
+    return this.examService.findDetailsByLessonGroup(id);
+  }
+
+  // ADMIN/MENTOR: Get exam detail by ID
+  @Get('detail/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create a new exam question' })
-  create(@Body() createExamDto: CreateExamDto) {
-    return this.examService.create(createExamDto);
-  }
-
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all exam questions' })
-  findAll() {
-    return this.examService.findAll();
-  }
-
-  @Get('section/:sectionId')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get exam questions by section' })
-  findBySection(@Param('sectionId', ParseIntPipe) sectionId: number) {
-    return this.examService.findBySection(sectionId);
-  }
-
-  @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get exam question by ID' })
+  @ApiOperation({ summary: 'ADMIN, MENTOR: Get exam detail by ID' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.examService.findOne(id);
   }
 
-  @Patch(':id')
+  // ADMIN/MENTOR: Create one exam
+  @Post('create')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update exam question' })
+  @ApiOperation({ summary: 'ADMIN, MENTOR: Create exam' })
+  create(@Body() createExamDto: CreateExamDto) {
+    return this.examService.create(createExamDto);
+  }
+
+  // ADMIN/MENTOR: Create many exams
+  @Post('create/many')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.MENTOR)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'ADMIN, MENTOR: Create many exams' })
+  createMany(@Body() createExamDto: CreateExamDto[]) {
+    return this.examService.createMany(createExamDto);
+  }
+
+  // ADMIN/MENTOR: Update exam
+  @Patch('update/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.MENTOR)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'ADMIN, MENTOR: Update exam' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateExamDto: UpdateExamDto,
@@ -69,37 +97,33 @@ export class ExamController {
     return this.examService.update(id, updateExamDto);
   }
 
+  // ADMIN/MENTOR: Delete exam
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete exam question' })
+  @ApiOperation({ summary: 'ADMIN, MENTOR: Delete exam' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.examService.remove(id);
   }
 
-  @Post('results')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Submit exam result' })
-  createResult(@Body() createResultDto: CreateExamResultDto) {
-    return this.examService.createResult(createResultDto);
-  }
-
-  @Get('results/all')
+  // ADMIN: Get all exam results
+  @Get('results')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN, UserRole.MENTOR, UserRole.ASSISTANT)
+  @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all exam results' })
+  @ApiOperation({ summary: 'ADMIN: Get all exam results' })
   findAllResults() {
     return this.examService.findAllResults();
   }
 
-  @Get('results/user/:userId')
-  @UseGuards(JwtAuthGuard)
+  // MENTOR: Get exam results by lesson group
+  @Get('results/lesson-group/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.MENTOR)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get exam results by user' })
-  findResultsByUser(@Param('userId', ParseIntPipe) userId: number) {
-    return this.examService.findResultsByUser(userId);
+  @ApiOperation({ summary: 'MENTOR: Get exam results by lesson group' })
+  findResultsByLessonGroup(@Param('id', ParseIntPipe) id: number) {
+    return this.examService.findResultsByLessonGroup(id);
   }
 }

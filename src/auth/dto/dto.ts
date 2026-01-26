@@ -248,7 +248,7 @@ export class LoginDto {
   @IsOptional()
   email?: string;
 
-  @ApiProperty({ example: 'password', description: 'User password' })
+  @ApiProperty({ example: 'pass', description: 'User password' })
   @IsString()
   @IsNotEmpty()
   password: string;
