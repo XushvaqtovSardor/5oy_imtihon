@@ -35,7 +35,7 @@ export class ContactController {
   @Get()
   @ApiOperation({
     summary: 'ADMIN',
-    description: 'Retrieve all contact form submissions',
+    description: 'Retrieve all  contact form submissions',
   })
   @ApiResponse({
     status: 200,
