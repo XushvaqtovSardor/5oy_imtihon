@@ -6,18 +6,19 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { 
-  registerWithPhoneDto, 
+import {
+  registerWithPhoneDto,
   registerWithEmailDto,
-  UserRole, 
+  UserRole,
   resetPasswordWithPhoneDto,
   resetPasswordWithEmailDto,
   loginWithPhoneDto,
-  loginWithEmailDto
+  loginWithEmailDto,
 } from './dto/dto';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from 'src/redis/redis.service';
 import { EVerificationTypes } from 'src/verification/dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private redis: RedisService,
+    private configService: ConfigService,
   ) {}
 
   private getConfirmationKey(
@@ -267,8 +269,14 @@ export class AuthService {
     }
 
     const payload = { sub: user.id, role: user.role };
-    const accessToken = this.jwt.sign(payload, { expiresIn: '15m' });
-    const refreshToken = this.jwt.sign(payload, { expiresIn: '7d' });
+    const accessToken = this.jwt.sign(payload, {
+      expiresIn: (this.configService.get<string>('JWT_ACCESS_EXPIRE') ||
+        '15m') as any,
+    });
+    const refreshToken = this.jwt.sign(payload, {
+      expiresIn: (this.configService.get<string>('JWT_REFRESH_EXPIRE') ||
+        '7d') as any,
+    });
 
     return {
       message: 'Login successful',
@@ -312,8 +320,14 @@ export class AuthService {
     }
 
     const payload = { sub: user.id, role: user.role };
-    const accessToken = this.jwt.sign(payload, { expiresIn: '15m' });
-    const refreshToken = this.jwt.sign(payload, { expiresIn: '7d' });
+    const accessToken = this.jwt.sign(payload, {
+      expiresIn: (this.configService.get<string>('JWT_ACCESS_EXPIRE') ||
+        '15m') as any,
+    });
+    const refreshToken = this.jwt.sign(payload, {
+      expiresIn: (this.configService.get<string>('JWT_REFRESH_EXPIRE') ||
+        '7d') as any,
+    });
 
     return {
       message: 'Login successful',
@@ -344,13 +358,14 @@ export class AuthService {
       }
 
       const newPayload = { sub: user.id, role: user.role };
-      const accessToken = this.jwt.sign(newPayload, { expiresIn: '15m' });
-      const newRefreshToken = this.jwt.sign(newPayload, { expiresIn: '7d' });
+      const accessToken = this.jwt.sign(newPayload, {
+        expiresIn: (this.configService.get<string>('JWT_ACCESS_EXPIRE') ||
+          '15m') as any,
+      });
 
       return {
         message: 'Token refreshed successfully',
         accessToken,
-        refreshToken: newRefreshToken,
       };
     } catch (error) {
       throw new UnauthorizedException('Invalid or expired refresh token');

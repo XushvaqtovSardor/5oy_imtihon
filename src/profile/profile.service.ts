@@ -4,6 +4,7 @@ import {
   HttpStatus,
   UnauthorizedException,
   ForbiddenException,
+  Logger,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CloudinaryService } from 'src/common/cloudinary.service';
@@ -20,6 +21,8 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProfileService {
+  private readonly logger = new Logger(ProfileService.name);
+
   constructor(
     private prisma: PrismaService,
     private cloudinary: CloudinaryService,
@@ -54,11 +57,14 @@ export class ProfileService {
     dto: UpdateProfileDto,
     file?: Express.Multer.File,
   ) {
+    this.logger.log(`Updating profile for user ${userId}`);
+
     const user = await this.prisma.users.findUnique({
       where: { id: userId },
     });
 
     if (!user) {
+      this.logger.error(`User not found: ${userId}`);
       throw new UnauthorizedException('User not found');
     }
 
@@ -66,14 +72,31 @@ export class ProfileService {
 
     if (dto.fullName) {
       updateData.fullName = dto.fullName;
+      this.logger.log(`Updating fullName to: ${dto.fullName}`);
     }
 
     if (file) {
-      if (user.image) {
-        await this.cloudinary.deleteImage(user.image);
+      this.logger.log(`Processing image upload for user ${userId}`);
+      this.logger.log(
+        `File details: name=${file.originalname}, size=${file.size}, mimetype=${file.mimetype}`,
+      );
+
+      try {
+        if (user.image) {
+          this.logger.log(`Deleting old image: ${user.image}`);
+          await this.cloudinary.deleteImage(user.image);
+        }
+
+        const imageUrl = await this.cloudinary.uploadImage(file);
+        updateData.image = imageUrl;
+        this.logger.log(`Image uploaded successfully: ${imageUrl}`);
+      } catch (error) {
+        this.logger.error(`Failed to upload image: ${JSON.stringify(error)}`);
+        throw new HttpException(
+          `Failed to upload image: ${error.message}`,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-      const imageUrl = await this.cloudinary.uploadImage(file);
-      updateData.image = imageUrl;
     }
 
     const updatedUser = await this.prisma.users.update({
@@ -88,6 +111,8 @@ export class ProfileService {
         role: true,
       },
     });
+
+    this.logger.log(`Profile updated successfully for user ${userId}`);
 
     return {
       message: 'Profile updated successfully',

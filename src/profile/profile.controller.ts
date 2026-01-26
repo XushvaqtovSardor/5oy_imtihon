@@ -79,10 +79,10 @@ export class ProfileController {
         message: 'Profile updated successfully',
         user: {
           id: 1,
-          phone: '+998902400025',
-          email: 'user@example.com',
-          fullName: 'John Doe Updated',
-          image: 'https://res.cloudinary.com/...',
+          phone: '+9989',
+          email: 's@gmail.com',
+          fullName: 'FullName',
+          image: 'url',
           role: 'STUDENT',
         },
       },
@@ -100,7 +100,7 @@ export class ProfileController {
   @Get('last-activity')
   @Roles(UserRole.STUDENT)
   @ApiOperation({
-    summary: 'Get last activity',
+    summary: 'STUDENT',
     description: 'Get last learning activity of the student',
   })
   @ApiResponse({
@@ -110,13 +110,13 @@ export class ProfileController {
       example: {
         id: 1,
         userId: 1,
-        courseId: '123e4567-e89b-12d3-a456-426614174000',
+        courseId: 'uuid',
         groupId: 1,
-        lessonId: '123e4567-e89b-12d3-a456-426614174001',
-        url: 'https://example.com/lesson',
+        lessonId: 'uuid',
+        url: 'url',
         course: {
-          id: '123e4567-e89b-12d3-a456-426614174000',
-          name: 'JavaScript Advanced',
+          id: 'uuid',
+          name: 'JavaScript',
         },
       },
     },
@@ -130,7 +130,7 @@ export class ProfileController {
   @Put('last-activity')
   @Roles(UserRole.STUDENT)
   @ApiOperation({
-    summary: 'Update last activity',
+    summary: 'STUDENT',
     description: 'Update last learning activity',
   })
   @ApiResponse({
@@ -142,10 +142,10 @@ export class ProfileController {
         activity: {
           id: 1,
           userId: 1,
-          courseId: '123e4567-e89b-12d3-a456-426614174000',
+          courseId: 'uuid',
           groupId: 1,
-          lessonId: '123e4567-e89b-12d3-a456-426614174001',
-          url: 'https://example.com/lesson',
+          lessonId: 'uuid',
+          url: 'url',
         },
       },
     },
@@ -205,7 +205,7 @@ export class ProfileController {
   @Patch('mentor-profile')
   @Roles(UserRole.MENTOR)
   @ApiOperation({
-    summary: 'Update mentor profile',
+    summary: 'MENTOR',
     description: 'Update mentor-specific profile information',
   })
   @ApiResponse({
@@ -218,13 +218,13 @@ export class ProfileController {
           id: 1,
           userId: 1,
           experience: 3,
-          job: 'Full-stack software engineer',
-          about: 'Experienced developer...',
-          telegram: 'https://t.me/username',
-          facebook: 'https://facebook.com/username',
-          linkedIn: 'https://linkedin.com/in/username',
-          github: 'https://github.com/username',
-          website: 'https://mywebsite.com',
+          job: 's',
+          about: 's',
+          telegram: 's',
+          facebook: 's',
+          linkedIn: 's',
+          github: 's',
+          website: 's',
         },
       },
     },

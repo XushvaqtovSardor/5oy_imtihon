@@ -44,10 +44,10 @@ export class VerificationEmailService {
     return user;
   }
 
-  private getSubject(type: EVerificationTypes,code) {
+  private getSubject(type: EVerificationTypes) {
     switch (type) {
       case EVerificationTypes.REGISTER:
-        return `Fixoo -${code} Ro'yxatdan o'tish tasdiqlash kodi`;
+        return `Fixoo - Ro'yxatdan o'tish tasdiqlash kodi`;
       case EVerificationTypes.RESET_PASSWORD:
         return `Fixoo - Parolni tiklash tasdiqlash kodi`;
       case EVerificationTypes.EDIT_PHONE:
@@ -91,7 +91,7 @@ export class VerificationEmailService {
     }
     const otp = generateOtp();
     await this.redis.set(key, JSON.stringify(otp), 600);
-    await this.mailService.sendEmail(email, this.getSubject(type, otp), +otp);
+    await this.mailService.sendEmail(email, this.getSubject(type), +otp);
     return { message: 'Confirmation OTP code send' };
   }
 

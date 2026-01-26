@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { 
-  sendEmailOtpDto, 
-  sendPhoneOtpDto, 
-  verifyEmailOtpDto, 
-  verifyPhoneOtpDto 
+import {
+  sendEmailOtpDto,
+  sendPhoneOtpDto,
+  verifyEmailOtpDto,
+  verifyPhoneOtpDto,
 } from 'src/auth/dto/dto';
 import { VerificationPhoneService } from './verificationPhone.service';
 import { VerificationEmailService } from './verificationEmail.service';
@@ -20,7 +20,8 @@ export class VerificationController {
   @Post('email/send')
   @ApiOperation({
     summary: 'Send OTP code to email',
-    description: 'Send OTP verification code to email for registration or password reset',
+    description:
+      'Send OTP verification code to email for registration or password reset',
   })
   @ApiResponse({
     status: 201,
@@ -65,7 +66,8 @@ export class VerificationController {
   @Post('phone/send')
   @ApiOperation({
     summary: 'Send OTP code to phone',
-    description: 'Send OTP verification code to phone number for registration or password reset',
+    description:
+      'Send OTP verification code to phone number for registration or password reset',
   })
   @ApiResponse({
     status: 201,

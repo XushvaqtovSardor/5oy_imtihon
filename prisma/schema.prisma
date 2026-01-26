@@ -38,6 +38,7 @@ enum CourseLevel {
   preIntermediate
   intermediate
   upperIntermediate
+  Advanced
 }
 
 enum PaidVia {

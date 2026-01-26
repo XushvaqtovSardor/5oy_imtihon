@@ -26,17 +26,18 @@ async function bootstrap() {
     .addTag('Verification', 'OTP verification endpoints for phone and email')
     .addTag('Device', 'Device management endpoints')
     .addTag('Profile', 'User profile management')
-    .addTag('Courses', 'Course management')
-    .addTag('Course Category', 'Course category management')
-    .addTag('Course Rating', 'Course rating and reviews')
-    .addTag('Purchased Courses', 'Purchased course management')
-    .addTag('Lessons', 'Lesson management')
-    .addTag('Lesson Groups', 'Lesson group management')
-    .addTag('Lesson Files', 'Lesson file management')
-    .addTag('Exams', 'Exam management')
-    .addTag('Homework', 'Homework management')
-    .addTag('Questions & Answers', 'Q&A management')
-    .addTag('Users', 'User management')
+    .addTag(
+      'Courses',
+      'Course management - create, update, filter, publish courses',
+    )
+    .addTag('course-categories', 'Course category management')
+    .addTag('ratings', 'Course rating and reviews')
+    .addTag('lessons', 'Lesson management')
+    .addTag('lesson-sections', 'Lesson section/group management')
+    .addTag('exams', 'Exam management')
+    .addTag('homework', 'Homework management')
+    .addTag('questions', 'Q&A management')
+    .addTag('projects', 'Project management')
     .addBearerAuth()
     .build();
 

@@ -58,7 +58,7 @@ export class registerDto {
 
   @ApiPropertyOptional({
     enum: UserRole,
-    example: UserRole.STUDENT,
+    example: '(ADMIN, MENTOR,ASSISTANT,STUDENT)',
     description: 'User role (default: STUDENT)',
   })
   @IsEnum(UserRole)
@@ -106,7 +106,7 @@ export class registerWithPhoneDto {
 
   @ApiPropertyOptional({
     enum: UserRole,
-    example: UserRole.STUDENT,
+    example: '(ADMIN, MENTOR,ASSISTANT,STUDENT)',
     description: 'User role (default: STUDENT)',
   })
   @IsEnum(UserRole)
@@ -154,7 +154,7 @@ export class registerWithEmailDto {
 
   @ApiPropertyOptional({
     enum: UserRole,
-    example: UserRole.STUDENT,
+    example: '(ADMIN, MENTOR,ASSISTANT,STUDENT)',
     description: 'User role (default: STUDENT)',
   })
   @IsEnum(UserRole)
@@ -173,7 +173,7 @@ export class registerWithEmailDto {
 export class sendOtpDto {
   @ApiProperty({
     enum: EVerificationTypes,
-    example: EVerificationTypes.REGISTER,
+    example: '(register, reset_password, edit_phone)',
     description: 'Type of verification (register, reset_password, edit_phone)',
   })
   @IsEnum(EVerificationTypes)
@@ -188,7 +188,7 @@ export class sendOtpDto {
   phone?: string;
 
   @ApiPropertyOptional({
-    example: 'sardor@gmail.com',
+    example: 's@gmail.com',
     description: 'Email address to send OTP',
   })
   @IsEmail()
@@ -199,14 +199,14 @@ export class sendOtpDto {
 export class sendEmailOtpDto {
   @ApiProperty({
     enum: EVerificationTypes,
-    example: EVerificationTypes.REGISTER,
+    example: '(register, reset_password, edit_phone)',
     description: 'Type of verification (register, reset_password, edit_phone)',
   })
   @IsEnum(EVerificationTypes)
   type: EVerificationTypes;
 
   @ApiProperty({
-    example: 'sardor@gmail.com',
+    example: 's@gmail.com',
     description: 'Email address to send OTP',
   })
   @IsEmail()
@@ -217,7 +217,7 @@ export class sendEmailOtpDto {
 export class sendPhoneOtpDto {
   @ApiProperty({
     enum: EVerificationTypes,
-    example: EVerificationTypes.REGISTER,
+    example: '(register, reset_password, edit_phone)',
     description: 'Type of verification (register, reset_password, edit_phone)',
   })
   @IsEnum(EVerificationTypes)
@@ -241,7 +241,7 @@ export class LoginDto {
   phone?: string;
 
   @ApiPropertyOptional({
-    example: 'sardor@gmail.com',
+    example: 's@gmail.com',
     description: 'Email address for login',
   })
   @IsEmail()
@@ -254,7 +254,7 @@ export class LoginDto {
   password: string;
 
   @ApiProperty({
-    example: 'iphone 9',
+    example: 'iPhone 13',
     description: 'Device name for tracking',
   })
   @IsString()
@@ -310,7 +310,7 @@ export class loginWithEmailDto {
 export class verifyOtpDto {
   @ApiProperty({
     enum: EVerificationTypes,
-    example: EVerificationTypes.REGISTER,
+    example: '(register, reset_password, edit_phone)',
     description: 'Type of verification',
   })
   @IsEnum(EVerificationTypes)
@@ -392,7 +392,7 @@ export class resetPasswordDto {
   @IsNotEmpty()
   password: string;
 
-  @ApiProperty({ example: '123456', description: 'OTP code for verification' })
+  @ApiProperty({ example: '1', description: 'OTP code for verification' })
   @IsString()
   @IsNotEmpty()
   otp: string;
@@ -406,7 +406,7 @@ export class resetPasswordDto {
   phone?: string;
 
   @ApiPropertyOptional({
-    example: 'sardor032@gmail.com',
+    example: 's@gmail.com',
     description: 'Email address for password reset',
   })
   @IsEmail()
@@ -470,7 +470,7 @@ export class RefreshTokenDto {
   token: string;
 
   @ApiProperty({
-    example: 'refreshToken',
+    example: 'iPhone 13',
     description: 'Device token',
   })
   @IsString()
