@@ -23,8 +23,6 @@ import { AnswerQuestionDto } from './dto/answer-question.dto';
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
-
-  // STUDENT: Get my questions
   @Get('mine')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -33,7 +31,6 @@ export class QuestionsController {
     return this.questionsService.findMyQuestions();
   }
 
-  // MENTOR, ADMIN, ASSISTANT: Get questions by course
   @Get('course/:courseId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.MENTOR, UserRole.ADMIN, UserRole.ASSISTANT)
@@ -45,7 +42,6 @@ export class QuestionsController {
     return this.questionsService.findByCourse(courseId);
   }
 
-  // Everyone: Get single question by ID
   @Get('single/:id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -54,7 +50,6 @@ export class QuestionsController {
     return this.questionsService.findOne(id);
   }
 
-  // MENTOR, ADMIN, ASSISTANT: Mark question as read
   @Post('read/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.MENTOR, UserRole.ADMIN, UserRole.ASSISTANT)
@@ -64,7 +59,6 @@ export class QuestionsController {
     return this.questionsService.markAsRead(id);
   }
 
-  // STUDENT: Create question
   @Post('create/:courseId')
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.STUDENT)
@@ -77,7 +71,6 @@ export class QuestionsController {
     return this.questionsService.create(courseId, createQuestionDto);
   }
 
-  // STUDENT: Update question
   @Patch('update/:id')
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.STUDENT)
@@ -90,7 +83,6 @@ export class QuestionsController {
     return this.questionsService.update(id, updateQuestionDto);
   }
 
-  // MENTOR, ASSISTANT: Answer question
   @Post('answer/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.MENTOR, UserRole.ASSISTANT)
@@ -103,7 +95,6 @@ export class QuestionsController {
     return this.questionsService.answer(id, answerDto);
   }
 
-  // MENTOR, ASSISTANT, ADMIN: Update answer
   @Patch('answer/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.MENTOR, UserRole.ASSISTANT, UserRole.ADMIN)
@@ -116,7 +107,6 @@ export class QuestionsController {
     return this.questionsService.updateAnswer(id, answerDto);
   }
 
-  // MENTOR, ASSISTANT, ADMIN: Delete answer
   @Delete('answer/delete/:id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.MENTOR, UserRole.ASSISTANT, UserRole.ADMIN)
@@ -126,7 +116,6 @@ export class QuestionsController {
     return this.questionsService.deleteAnswer(id);
   }
 
-  // STUDENT: Delete question
   @Delete('delete/:id')
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.STUDENT)

@@ -39,7 +39,7 @@ export class FilesService {
     return {
       message: 'Public file access',
       filename: name,
-      url: `https://res.cloudinary.com/your-cloud-name/image/upload/${name}`,
+      url: `http`,
     };
   }
 
@@ -48,7 +48,7 @@ export class FilesService {
       message: 'Private lesson file access',
       lessonId,
       filename: name,
-      url: `https://res.cloudinary.com/your-cloud-name/raw/upload/lessons/${lessonId}/${name}`,
+      url: `http`,
     };
   }
 
@@ -57,7 +57,7 @@ export class FilesService {
       message: 'Private video access',
       lessonId,
       hlsf,
-      url: `https://res.cloudinary.com/your-cloud-name/video/upload/lessons/${lessonId}/${hlsf}`,
+      url: `http`,
     };
   }
 }

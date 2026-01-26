@@ -41,7 +41,6 @@ export class ExamService {
     return newExams;
   }
 
-  // ADMIN/MENTOR: Update exam
   update(id: number, updateExamDto: UpdateExamDto) {
     const examIndex = this.exams.findIndex((e) => e.id === id);
     if (examIndex === -1) throw new NotFoundException('Exam not found');
@@ -49,7 +48,6 @@ export class ExamService {
     return this.exams[examIndex];
   }
 
-  // ADMIN/MENTOR: Delete exam
   remove(id: number) {
     const examIndex = this.exams.findIndex((e) => e.id === id);
     if (examIndex === -1) throw new NotFoundException('Exam not found');
@@ -57,12 +55,10 @@ export class ExamService {
     return deleted[0];
   }
 
-  // ADMIN: Get all exam results
   findAllResults() {
     return this.results;
   }
 
-  // MENTOR: Get exam results by lesson group
   findResultsByLessonGroup(id: number) {
     return this.results.filter((result) => result.lessonGroupId === id);
   }

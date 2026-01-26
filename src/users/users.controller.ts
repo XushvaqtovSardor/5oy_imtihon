@@ -66,7 +66,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
-    summary: 'Get user by ID',
+    summary: 'ADMIN',
     description: 'Retrieve a specific user (Admin only)',
   })
   @ApiResponse({ status: 200, description: 'User details' })
@@ -80,7 +80,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiOperation({
-    summary: 'Get user by phone number',
+    summary: 'ADMIN MENTOR',
     description: 'Retrieve a user by phone (Admin, Mentor)',
   })
   @ApiResponse({ status: 200, description: 'User details' })
@@ -94,7 +94,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
-    summary: 'Create admin user',
+    summary: 'ADMIN',
     description: 'Create a new admin user (Admin only)',
   })
   @ApiResponse({ status: 201, description: 'Admin created successfully' })
@@ -109,7 +109,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
-    summary: 'Create mentor user',
+    summary: 'ADMIN',
     description: 'Create a new mentor user (Admin only)',
   })
   @ApiResponse({ status: 201, description: 'Mentor created successfully' })
@@ -123,7 +123,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiOperation({
-    summary: 'Create assistant user',
+    summary: 'ADMIN MENTOR',
     description: 'Create a new assistant user (Admin, Mentor)',
   })
   @ApiResponse({ status: 201, description: 'Assistant created successfully' })
@@ -137,7 +137,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
-    summary: 'Update mentor',
+    summary: 'ADMIN',
     description: 'Update mentor details (Admin only)',
   })
   @ApiResponse({ status: 200, description: 'Mentor updated successfully' })
@@ -154,7 +154,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @ApiOperation({
-    summary: 'Delete user',
+    summary: 'ADMIN',
     description: 'Delete a user (Admin only)',
   })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })

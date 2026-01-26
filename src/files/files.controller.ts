@@ -1,21 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Param,
-  UseInterceptors,
-  UploadedFile,
-  UseGuards,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Body } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
-  ApiConsumes,
 } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -42,7 +31,7 @@ export class FilesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.STUDENT)
   @ApiOperation({
-    summary: 'Get private lesson file',
+    summary: 'STUDENT',
     description: 'Access a private lesson file (Student)',
   })
   @ApiResponse({ status: 200, description: 'File retrieved successfully' })
@@ -58,7 +47,7 @@ export class FilesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.STUDENT)
   @ApiOperation({
-    summary: 'Get private video',
+    summary: 'STUDENT',
     description: 'Access a private video file (Student)',
   })
   @ApiResponse({ status: 200, description: 'Video retrieved successfully' })
