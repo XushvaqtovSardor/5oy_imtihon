@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CourseCategoryService } from './course-category.service';
 import { CreateCourseCategoryDto } from './dto/create-course-category.dto';
@@ -8,8 +18,8 @@ import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '@prisma/client';
 
-@ApiTags('course-categories')
-@Controller('course-categories')
+@ApiTags('Course-categories')
+@Controller('courseCategories')
 export class CourseCategoryController {
   constructor(private readonly courseCategoryService: CourseCategoryService) {}
 
@@ -39,7 +49,10 @@ export class CourseCategoryController {
   @Roles(UserRole.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update course category' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateCourseCategoryDto: UpdateCourseCategoryDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCourseCategoryDto: UpdateCourseCategoryDto,
+  ) {
     return this.courseCategoryService.update(id, updateCourseCategoryDto);
   }
 

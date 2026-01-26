@@ -8,7 +8,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '@prisma/client';
 
-@ApiTags('ratings')
+@ApiTags('Ratings')
 @Controller('ratings')
 export class RatingController {
   constructor(private readonly ratingService: RatingService) {}

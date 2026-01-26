@@ -1,15 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { HomeworkService } from './homework.service';
 import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { UpdateHomeworkDto } from './dto/update-homework.dto';
-import { CreateHomeworkSubmissionDto, UpdateHomeworkSubmissionDto } from './dto/homework-submission.dto';
+import {
+  CreateHomeworkSubmissionDto,
+  UpdateHomeworkSubmissionDto,
+} from './dto/homework-submission.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '@prisma/client';
 
-@ApiTags('homework')
+@ApiTags('Homework')
 @Controller('homework')
 export class HomeworkController {
   constructor(private readonly homeworkService: HomeworkService) {}
@@ -44,7 +57,10 @@ export class HomeworkController {
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update homework' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateHomeworkDto: UpdateHomeworkDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateHomeworkDto: UpdateHomeworkDto,
+  ) {
     return this.homeworkService.update(id, updateHomeworkDto);
   }
 
@@ -87,7 +103,10 @@ export class HomeworkController {
   @Roles(UserRole.ADMIN, UserRole.MENTOR, UserRole.ASSISTANT)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update homework submission status' })
-  updateSubmission(@Param('id', ParseIntPipe) id: number, @Body() updateSubmissionDto: UpdateHomeworkSubmissionDto) {
+  updateSubmission(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateSubmissionDto: UpdateHomeworkSubmissionDto,
+  ) {
     return this.homeworkService.updateSubmission(id, updateSubmissionDto);
   }
 

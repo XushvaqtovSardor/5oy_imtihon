@@ -30,14 +30,14 @@ async function bootstrap() {
       'Courses',
       'Course management - create, update, filter, publish courses',
     )
-    .addTag('course-categories', 'Course category management')
-    .addTag('ratings', 'Course rating and reviews')
-    .addTag('lessons', 'Lesson management')
-    .addTag('lesson-sections', 'Lesson section/group management')
-    .addTag('exams', 'Exam management')
-    .addTag('homework', 'Homework management')
-    .addTag('questions', 'Q&A management')
-    .addTag('projects', 'Project management')
+    .addTag('Course-categories', 'Course category management')
+    .addTag('Ratings', 'Course rating and reviews')
+    .addTag('Lessons', 'Lesson management')
+    .addTag('Lesson-sections', 'Lesson section/group management')
+    .addTag('Exams', 'Exam management')
+    .addTag('Homework', 'Homework management')
+    .addTag('Questions', 'Q&A management')
+    .addTag('Projects', 'Project management')
     .addBearerAuth()
     .build();
 

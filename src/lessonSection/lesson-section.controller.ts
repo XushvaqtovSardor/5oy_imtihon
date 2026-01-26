@@ -8,8 +8,8 @@ import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '@prisma/client';
 
-@ApiTags('lesson-sections')
-@Controller('lesson-sections')
+@ApiTags('Lesson-sections')
+@Controller('lessonSections')
 export class LessonSectionController {
   constructor(private readonly lessonSectionService: LessonSectionService) {}
 

@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ExamService } from './exam.service';
 import { CreateExamDto } from './dto/create-exam.dto';
@@ -9,7 +19,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '@prisma/client';
 
-@ApiTags('exams')
+@ApiTags('Exams')
 @Controller('exams')
 export class ExamController {
   constructor(private readonly examService: ExamService) {}
@@ -52,7 +62,10 @@ export class ExamController {
   @Roles(UserRole.ADMIN, UserRole.MENTOR)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update exam question' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateExamDto: UpdateExamDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateExamDto: UpdateExamDto,
+  ) {
     return this.examService.update(id, updateExamDto);
   }
 
